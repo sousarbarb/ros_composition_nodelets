@@ -7,7 +7,8 @@ namespace ros_composition_nodelets
 
 using namespace std::chrono_literals;
 
-PubROS2::PubROS2() : rclcpp::Node("pub_ros2"), m_counter_(0)
+PubROS2::PubROS2(const rclcpp::NodeOptions& options)
+    : rclcpp::Node("pub_ros2", options), m_counter_(0)
 {
   m_pub_ = this->create_publisher<std_msgs::msg::String>("hello_world", 10);
   m_timer_ = this->create_wall_timer(1s, std::bind(&PubROS2::cbTimer, this));
@@ -30,3 +31,7 @@ void PubROS2::cbTimer()
 }
 
 }  // namespace ros_composition_nodelets
+
+#include <rclcpp_components/register_node_macro.hpp>
+
+RCLCPP_COMPONENTS_REGISTER_NODE(ros_composition_nodelets::PubROS2)

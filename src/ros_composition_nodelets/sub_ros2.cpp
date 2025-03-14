@@ -3,14 +3,15 @@
 namespace ros_composition_nodelets
 {
 
-SubROS2::SubROS2() : rclcpp::Node("sub_ros2")
+SubROS2::SubROS2(const rclcpp::NodeOptions& options)
+    : rclcpp::Node("sub_ros2", options)
 {
   m_sub_ = this->create_subscription<std_msgs::msg::String>(
       "hello_world", 10,
       std::bind(&SubROS2::cbSubHelloWorld, this, std::placeholders::_1));
 }
 
-void SubROS2::cbSubHelloWorld(const std_msgs::msg::String::SharedPtr msg)
+void SubROS2::cbSubHelloWorld(const std_msgs::msg::String::UniquePtr msg)
 {
   std::stringstream str;
   str << "I heard: '" << msg->data << "' (sub ptr: " << msg.get() << ")";
@@ -19,3 +20,7 @@ void SubROS2::cbSubHelloWorld(const std_msgs::msg::String::SharedPtr msg)
 }
 
 }  // namespace ros_composition_nodelets
+
+#include <rclcpp_components/register_node_macro.hpp>
+
+RCLCPP_COMPONENTS_REGISTER_NODE(ros_composition_nodelets::SubROS2)

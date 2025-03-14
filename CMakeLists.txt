@@ -45,38 +45,65 @@ message(STATUS "Robot Operating System (ROS) detected: ROS $ENV{ROS_VERSION} $EN
 ## Dependencies
 find_package(ament_cmake REQUIRED)
 find_package(rclcpp REQUIRED)
+find_package(rclcpp_components REQUIRED)
 find_package(std_msgs REQUIRED)
 
-## Declare a C++ executable
-add_executable(pub2
-  src/ros_composition_nodelets/pub_ros2.cpp
-  src/main_ros2_pub.cpp
+## Declare a C++ library
+add_library(pub2_component SHARED src/ros_composition_nodelets/pub_ros2.cpp)
+target_include_directories(pub2_component PUBLIC
+  $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
+  $<INSTALL_INTERFACE:include>
 )
+target_compile_definitions(pub2_component PRIVATE
+  "ROS_COMPOSITION_NODELETS_BUILDING_DLL"
+)
+ament_target_dependencies(pub2_component
+  rclcpp
+  rclcpp_components
+  std_msgs
+)
+rclcpp_components_register_nodes(pub2_component "ros_composition_nodelets::PubROS2")
+
+add_library(sub2_component SHARED src/ros_composition_nodelets/sub_ros2.cpp)
+target_include_directories(sub2_component PUBLIC
+  $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
+  $<INSTALL_INTERFACE:include>
+)
+target_compile_definitions(sub2_component PRIVATE
+  "ROS_COMPOSITION_NODELETS_BUILDING_DLL"
+)
+ament_target_dependencies(sub2_component
+  rclcpp
+  rclcpp_components
+  std_msgs
+)
+rclcpp_components_register_nodes(sub2_component "ros_composition_nodelets::SubROS2")
+
+## Declare a C++ executable
+add_executable(pub2 src/main_ros2_pub.cpp)
 target_include_directories(pub2 PUBLIC
   $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
   $<INSTALL_INTERFACE:include>
 )
-ament_target_dependencies(pub2
-  rclcpp
-  std_msgs
-)
+target_link_libraries(pub2 pub2_component)
 
-add_executable(sub2
-  src/ros_composition_nodelets/sub_ros2.cpp
-  src/main_ros2_sub.cpp
-)
+add_executable(sub2 src/main_ros2_sub.cpp)
 target_include_directories(sub2 PUBLIC
   $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
   $<INSTALL_INTERFACE:include>
 )
-ament_target_dependencies(sub2
-  rclcpp
-  std_msgs
-)
+target_link_libraries(sub2 sub2_component)
 
 #############
 ## Install ##
 #############
+
+install(
+  TARGETS pub2_component sub2_component
+  ARCHIVE DESTINATION lib
+  LIBRARY DESTINATION lib
+  RUNTIME DESTINATION bin
+)
 
 install(
   TARGETS pub2 sub2

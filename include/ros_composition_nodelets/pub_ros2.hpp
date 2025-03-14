@@ -2,6 +2,7 @@
 
 #include <rclcpp/rclcpp.hpp>
 #include <rclcpp/timer.hpp>
+#include <rclcpp_components/visibility_control.hpp>
 #include <std_msgs/msg/string.hpp>
 
 namespace ros_composition_nodelets
@@ -18,7 +19,8 @@ class PubROS2 : public rclcpp::Node
 
  public:
 
-  PubROS2();
+  RCLCPP_COMPONENTS_PUBLIC
+  explicit PubROS2(const rclcpp::NodeOptions& options = rclcpp::NodeOptions());
 
  protected:
 
