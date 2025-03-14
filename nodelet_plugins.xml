@@ -1,0 +1,13 @@
+<library path="lib/libros_composition_nodelets">
+
+  <class name="ros_composition_nodelets/PubROS1" type="ros_composition_nodelets::PubROS1"
+    base_class_type="nodelet::Nodelet">
+    <description>Example nodelet publishes "Hello World".</description>
+  </class>
+
+  <class name="ros_composition_nodelets/SubROS1" type="ros_composition_nodelets::SubROS1"
+    base_class_type="nodelet::Nodelet">
+    <description>Example nodelet subscribes the topic hello_world.</description>
+  </class>
+
+</library>

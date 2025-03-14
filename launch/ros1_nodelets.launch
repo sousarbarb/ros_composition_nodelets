@@ -1,0 +1,15 @@
+<launch>
+
+  <node pkg="nodelet" type="nodelet" name="nodelet_manager" args="manager"
+    output="screen" />
+
+  <node pkg="nodelet" type="nodelet" name="pub0"
+    args="load ros_composition_nodelets/PubROS1 nodelet_manager" />
+
+  <node pkg="nodelet" type="nodelet" name="sub1"
+    args="load ros_composition_nodelets/SubROS1 nodelet_manager" />
+
+  <node pkg="nodelet" type="nodelet" name="sub2"
+    args="load ros_composition_nodelets/SubROS1 nodelet_manager" />
+
+</launch>
