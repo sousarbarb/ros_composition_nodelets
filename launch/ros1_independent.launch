@@ -1,0 +1,7 @@
+<launch>
+
+  <node pkg="ros_composition_nodelets" type="pub" name="pub0" output="screen" />
+  <node pkg="ros_composition_nodelets" type="sub" name="sub1" output="screen" />
+  <node pkg="ros_composition_nodelets" type="sub" name="sub2" output="screen" />
+
+</launch>

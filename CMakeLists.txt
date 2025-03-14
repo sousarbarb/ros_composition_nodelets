@@ -94,6 +94,22 @@ target_link_libraries(${PROJECT_NAME}
   ${catkin_LIBRARIES}
 )
 
+## Declare a C++ executable
+add_executable(pub src/main_ros1_pub.cpp)
+add_dependencies(pub
+  ${${PROJECT_NAME}_EXPORTED_TARGETS}
+  ${catkin_EXPORTED_TARGETS}
+)
+target_link_libraries(pub ${PROJECT_NAME})
+
+add_executable(sub src/main_ros1_sub.cpp)
+add_dependencies(sub
+  ${${PROJECT_NAME}_EXPORTED_TARGETS}
+  ${catkin_EXPORTED_TARGETS}
+)
+target_link_libraries(sub ${PROJECT_NAME})
+
+
 #############
 ## Install ##
 #############
@@ -103,7 +119,7 @@ target_link_libraries(${PROJECT_NAME}
 
 ## Mark libraries for installation
 ## See http://docs.ros.org/melodic/api/catkin/html/howto/format1/building_libraries.html
-install(TARGETS ${PROJECT_NAME}
+install(TARGETS ${PROJECT_NAME} pub sub
   ARCHIVE DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
   LIBRARY DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
   RUNTIME DESTINATION ${CATKIN_GLOBAL_BIN_DESTINATION}
